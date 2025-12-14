@@ -17,12 +17,8 @@ config ZRAM
 
 choice
 	prompt "Default zram compressor"
-	default ZRAM_DEF_COMP_LZO
+	default ZRAM_DEF_COMP_ZSTD
 	depends on ZRAM
-
-config ZRAM_DEF_COMP_LZO
-	bool "lzo"
-	depends on CRYPTO_LZO
 
 config ZRAM_DEF_COMP_LZ4
 	bool "lz4"
@@ -40,7 +36,6 @@ endchoice
 
 config ZRAM_DEF_COMP
 	string
-	default "lzo" if ZRAM_DEF_COMP_LZO
 	default "lz4" if ZRAM_DEF_COMP_LZ4
 	default "lz4hc" if ZRAM_DEF_COMP_LZ4HC
 	default "zstd" if ZRAM_DEF_COMP_ZSTD
@@ -48,7 +43,7 @@ config ZRAM_DEF_COMP
 config ZRAM_WRITEBACK
        bool "Write back incompressible or idle page to backing device"
        depends on ZRAM
-       default n
+       default y
        help
 	 With incompressible page, there is no memory saving to keep it
 	 in memory. Instead, write it out to backing device.
