@@ -558,8 +558,7 @@
 	};
 
 	chosen {
-		bootargs = "quiet rcupdate.rcu_expedited=1 rcupdate.rcu_normal_after_boot=1 rcu_nocbs=0-7 nosoftlockup noirqdebug nodebugmon kpti=off cgroup_disable=pressure mce=ignore_ce audit=0";
-		rng-seed = <0x12345678>;
+		bootargs = "rcupdate.rcu_expedited=1 rcu_nocbs=0-7 cgroup.memory=nokmem,nosocket";
 	};
 
 	soc: soc { };
@@ -699,15 +698,6 @@
 			label = "cont_splash_region";
 		};
 
-ramoops: ramoops@a1600000 {
-			compatible = "ramoops";
-			reg = <0x0 0xa1600000 0x0 0x800000>;
-			record-size = <0x200000>;
-			pmsg-size = <0x200000>;
-		    ecc-size = <16>;
-		    max-reason = <4>;
-		};
-		
 		adsp_mem: adsp_region {
 			compatible = "shared-dma-pool";
 			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
@@ -769,7 +759,7 @@ ramoops: ramoops@a1600000 {
 			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
 			reusable;
 			alignment = <0x0 0x400000>;
-			size = <0x0 0x8000000>;
+			size = <0x0 0x2800000>;
 			linux,cma-default;
 		};
 	};
@@ -2398,8 +2388,8 @@ ramoops: ramoops@a1600000 {
 		"MAX";
 
 		/* PM QoS */
-		qcom,pm-qos-cpu-groups = <0x01 0x02 0x04 0x08 0x10 0x20 0x40 0x80>;
-		qcom,pm-qos-cpu-group-latency-us = <100 100 100 100 100 100 100 100>;
+		qcom,pm-qos-cpu-groups = <0x0f 0xf0>;
+		qcom,pm-qos-cpu-group-latency-us = <44 44>;
 		qcom,pm-qos-default-cpu = <0>;
 
 		pinctrl-names = "dev-reset-assert", "dev-reset-deassert";
@@ -2426,7 +2416,7 @@ ramoops: ramoops@a1600000 {
 		compatible = "qcom,msm-fastrpc-compute";
 		qcom,fastrpc-adsp-audio-pdr;
 		qcom,rpc-latency-us = <235>;
-        qcom,qos-cores = <0 1 2 3 4 5>;
+
 		qcom,msm_fastrpc_compute_cb1 {
 			compatible = "qcom,msm-fastrpc-compute-cb";
 			label = "cdsprpc-smd";
@@ -2843,8 +2833,7 @@ ramoops: ramoops@a1600000 {
 
 				msm_cdsp_rm: qcom,msm_cdsp_rm {
 					compatible = "qcom,msm-cdsp-rm";
-					qcom,qos-cores = <0 1 2 3 4 5>;
-					qcom,qos-latency-us = <67>;
+					qcom,qos-latency-us = <44>;
 					qcom,qos-maxhold-ms = <20>;
 					qcom,compute-cx-limit-en;
 					qcom,compute-priority-mode = <2>;
